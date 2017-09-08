@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Budget Familial - <%- namePage %></title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link href="/css/sb-admin-2.css" rel="stylesheet">
+        <link href="/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="/jquery-ui.css">
+	</head>
+
+	<body>
+
+		
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/index">Budget Familial</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <% if(is_parent == 1){ %>
+                <li>
+                    <a href="/users" title="Ajouter, modifier, supprimer et voir les utilisateurs">
+                         <i class="fa fa-users fa-fw"></i> Gestion des utilisateur
+                    </a>
+                </li>
+                <% } %>
+               
+                <li>
+                    <a href="/logout">
+                         <i class="fa fa-times-circle fa-fw"></i> D&eacute;connexion
+                    </a>
+                </li>               
+            </ul>
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="/" <% if(typePage=="index"){ %> class="active" <% } %>><i class="fa fa-home fa-fw"></i> Accueil</a>
+                        </li>
+                        <li>
+                            <a href="/depenses" title="Ajouter, modifier, supprimer et voir les d&eacute;penses" <% if(typePage=="depenses"){ %> class="active" <% } %>><i class="fa fa-sign-out fa-fw"></i> Gerer les d&eacute;penses</a>
+                        </li>
+                        <li>
+                            <a href="/rentrees" title="Ajouter, modifier, supprimer et voir les rentr&eacute;es" <% if(typePage=="rentrees"){ %> class="active" <% } %>><i class="fa fa-sign-in fa-fw"></i> Gerer les rentr&eacute;es</a>
+                        </li>
+                        <% if(is_parent == 1){ %>
+                        <li>
+                            <a href="/budget" title="Ajouter, modifier, supprimer et voir les budgets exceptionnels" <% if(typePage=="budgets"){ %> class="active" <% } %>><i class="fa fa-money fa-fw"></i> Gerer le budget exceptionnel</a>
+                        </li>
+                        <% } %>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>

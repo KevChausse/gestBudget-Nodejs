@@ -1,0 +1,77 @@
+<%- include('head', {namePage: "Index", typePage: "index"}); %>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Bienvenue <%= prenom %></h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3>Liste des transactions: </h3>
+                </div>
+
+
+                <div class="col-lg-4 text-right">
+                    <h4>
+                        <select id="selPers" onchange="updPage()">
+                        <option value="all" <% if(whoIs=="all"){ %><%- "selected" %> <% } %>>-Toutes les personnes-</option>
+                    <% for(var ind = 0; ind < listPersonnes.length; ind++){ %>
+                            <option value="<%- listPersonnes[ind].id_personne %>" <% if(listPersonnes[ind].id_personne==whoIs){ %><%- "selected" %> <% } %>>
+                            <%- listPersonnes[ind].prenom_personne+" "+listPersonnes[ind].nom_personne %>
+                            </option>
+                    <% } %>
+                        </select>
+                    </h4>
+                </div>
+
+	            <table class="table table-bordered table-striped">
+				  	<tr>
+					  <th>ID</th>
+					  <th>Poste</th>
+					  <th>Date</th>
+					  <th>Personne</th>
+					  <th>Montant</th>
+					</tr>
+                    <% for(var ind = 0; ind < tabTransac.length; ind++){ %>
+					<tr>
+					  <td>#<%- tabTransac[ind].id %></td>
+					  <td><%- tabTransac[ind].nom_transac %></td>
+					  <td><%- tabTransac[ind].m_date %></td>
+					  <td><%- tabTransac[ind].prenom_personne+" "+tabTransac[ind].nom_personne %></td>
+                      <% if(tabTransac[ind].montant_n){ %>
+					  <td class="text-danger text-right">-<%- tabTransac[ind].montant_n.toFixed(2) %> &euro;</td>
+                      <% } else if(tabTransac[ind].montant_p){ %>
+                      <td class="text-success text-right">+<%- tabTransac[ind].montant_p.toFixed(2) %> &euro;</td>
+                     <% } %>
+					</tr>
+                    <% } %>
+					<tr>
+					  <th colspan="4" class="text-right">Total</th>
+					   <% if(totalTransac < 0){ %>
+                      <td class="text-danger text-right"><b><%- totalTransac.toFixed(2) %> &euro;</b></td>
+                      <% } else { %>
+                      <td class="text-success text-right"><b>+<%- totalTransac.toFixed(2) %> &euro;</b></td>
+                    <% } %>
+					</tr>
+				</table>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <script>
+      function updPage(){
+        var selPers = document.getElementById('selPers').value;
+        window.location.replace("/index/"+selPers);
+      }
+
+    </script>
+ 
+<%- include('foot', {}); %>

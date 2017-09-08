@@ -1,0 +1,194 @@
+<%- include('head', {namePage: "Gestion des budgets", typePage: "budgets"}); %>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Modifier le budget: </h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+                <form class="form-horizontal" action="/updateBudget/<%- listeBudget[0].id_budget %>" method="post" onsubmit="return trySub()">
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Selectionnez une personne &eacute;mettrice</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="personnes_e" id="personnes1">
+                        <option value="0">-Selectionner une personne-</option>
+                        <% for(let ind = 0; ind < listePersonnes.length; ind++){ %>
+                           <%- "<option value='"+listePersonnes[ind].id_personne+"'" %><% if(listeBudgets[0].emetteur_budget == listePersonnes[ind].id_personne){ %><%- " selected" %><% } %><%- ">"+listePersonnes[ind].prenom_personne+" "+listePersonnes[ind].nom_personne+"</option>" %>
+                        <% } %>
+                        </select>
+                    </div>
+                </div>
+                <p class="text-center">-OU-</p>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Ajouter une personne</label>
+                    <div class="col-sm-9">
+                     <div class="row">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="nom_e" id="nom1" placeholder="Entrez un nom"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="prenom_e" id="prenom1" placeholder="Entrez un prénom"/>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Selectionnez une personne r&eacute;ceptrice</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="personnes_r" id="personnes2">
+                        <option value="0">-Selectionner une personne-</option>
+                        <% for(let ind = 0; ind < listePersonnes.length; ind++){ %>
+                           <%- "<option value='"+listePersonnes[ind].id_personne+"'" %><% if(listeBudgets[0].recepteur_budget == listePersonnes[ind].id_personne){ %><%- " selected" %><% } %><%- ">"+listePersonnes[ind].prenom_personne+" "+listePersonnes[ind].nom_personne+"</option>" %>
+                        <% } %>
+                        </select>
+                    </div>
+                </div>
+                <p class="text-center">-OU-</p>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Ajouter une personne</label>
+                    <div class="col-sm-9">
+                     <div class="row">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="nom_r" id="nom2" placeholder="Entrez un nom"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="prenom_r" id="prenom2" placeholder="Entrez un prénom"/>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Selectionnez une origine</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="raisons" id="raisons">
+                            <option value="0">-Selectionner une origine-</option>
+                        <% for(let ind = 0; ind < listeRaisons.length; ind++){ %>
+                           <%- "<option value='"+listeRaisons[ind].id_raison+"'" %><% if(listeBudgets[0].raison_budget == listeRaisons[ind].id_raison){ %><%- " selected" %><% } %><%- ">"+listeRaisons[ind].nom_raison+"</option>" %>
+                        <% } %>
+                        
+                        </select>
+                    </div>
+                </div>
+                <p class="text-center">-OU-</p>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Ajouter une origine</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="newRaison" id="newRaison" placeholder="Entrez une origine"/>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Montant de la transaction</label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="montant" step="0.01" min=0 placeholder="Entrez un montant" value="<%- listeBudgets[0].montant_budget %>" required/>
+                            <span class="input-group-addon">&euro;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Date de la transaction</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="datepicker" name="date" placeholder="Entrez une date" value="<%- listeBudgets[0].m_date_budget %>" required/>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div id="erreur" class="text-danger"></div>
+
+                
+                <div class="form-group">
+                    <a href="/budget" class="btn btn-default col-sm-offset-10">&lt; Retour</a>
+
+                    <button type="submit" class="btn btn-success">Valider</button>
+                </div>
+
+            </form>
+
+            </div>
+
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+
+
+    <div class="modal fade bs-example-modal-lg" id="ValidModal" tabindex="-1" role="dialog" data-target=".bs-example-modal-lg">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Modifier un nouveeau budget</h4>
+          </div>
+          <div class="modal-body">
+            <p><% if(validForm == 1){ %>
+                <%- "Votre nouveau budget a &eacute;t&eacute; modifi&eacute;." %>
+            <%  } else if(validForm == 2){ %>
+               <%- "Le budget a &eacute;t&eacute; supprim&eacute;e" %>
+            <% } %> 
+            </p>
+            <button type="button" class="btn btn-primary col-sm-offset-11" data-dismiss="modal">OK</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <script>
+      function trySub(){
+        var inpNom1 = document.getElementById("nom1").value;
+        var inpPrenom1 = document.getElementById("prenom1").value;
+        var inpPersonnes1 = document.getElementById("personnes1").value;
+        var inpNom2 = document.getElementById("nom2").value;
+        var inpPrenom2 = document.getElementById("prenom2").value;
+        var inpPersonnes2 = document.getElementById("personnes2").value;
+        var inpRaisons = document.getElementById("raisons").value;
+        var inpNewRaison = document.getElementById("newRaison").value;
+        var spanErr = document.getElementById("erreur");
+
+        if(inpNom1 == "" && inpPrenom1 == "" && inpPersonnes1==0){
+            spanErr.innerHTML = "<span>Veuillez renseigner une personne</span>";
+            return false;
+        }
+        if(inpNom2 == "" && inpPrenom2 == "" && inpPersonnes2==0){
+            spanErr.innerHTML = "<span>Veuillez renseigner une personne</span>";
+            return false;
+        }
+        if(inpNewRaison == "" && inpRaisons == 0){
+            spanErr.innerHTML = "<span>Veuillez renseigner une raison</span>";
+            return false;
+        }
+        return true;
+      }
+
+      $( function() {
+        $( "#datepicker" ).datepicker({
+          dateFormat: "yy-mm-dd"
+        });
+      } );
+        <% if(validForm!=0){ %>
+                           <%- "$('#ValidModal').modal('show');" %>
+        <% } %>
+    </script>
+
+
+<%- include('foot', {}); %>

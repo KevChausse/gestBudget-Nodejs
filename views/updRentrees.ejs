@@ -1,0 +1,164 @@
+<%- include('head', {namePage: "Gestion des rentr&eacute;es", typePage: "rentrees"}); %>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Modifier la rentr&eacute;e: </h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+                <form class="form-horizontal" action="/updateRentree/<%- listeRentrees[0].id_rentree %>" method="post" onsubmit="return trySub()">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Selectionnez une personne</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="personnes" id="personnes">
+                            <option value="0">-Selectionner une personne-</option>
+                            <% for(let ind = 0; ind < listePersonnes.length; ind++){ %>
+                               <%- "<option value=\""+listePersonnes[ind].id_personne+"\"" %><% if(listeRentrees[0].personne_rentree == listePersonnes[ind].id_personne){ %><%- " selected" %><% } %><%- ">"+listePersonnes[ind].prenom_personne+" "+listePersonnes[ind].nom_personne+"</option>" %>
+                            <% } %>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="text-center">-OU-</p>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Ajouter une personne</label>
+                        <div class="col-sm-8">
+                         <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="nom" id="nom" placeholder="Entrez un nom"/>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="prenom" id="prenom" placeholder="Entrez un prénom"/>
+                            </div>
+                         </div>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Selectionnez une origine</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="raisons" id="raisons">
+                                <option value="0">-Selectionner une origine-</option>
+                            <% for(let ind = 0; ind < listeRaisons.length; ind++){ %>
+                               <%- "<option value=\""+listeRaisons[ind].id_origine+"\"" %><% if(listeRentrees[0].origine_rentree == listeRaisons[ind].id_origine){ %><%- " selected" %><% } %><%- ">"+listeRaisons[ind].nom_origine+"</option>" %>
+                            <% } %>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="text-center">-OU-</p>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Ajouter une origine</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="newRaison" id="newRaison" placeholder="Entrez une raison"/>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Montant de la transaction</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="montant" step="0.01" min=0 placeholder="Entrez un montant" value="<%- listeRentrees[0].montant_rentree.toFixed(2) %>" required/>
+                                <span class="input-group-addon">&euro;</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Date de la transaction</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" id="datepicker" name="date" placeholder="Entrez une date" value="<%- listeRentrees[0].m_date_rentree %>" required/>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                <div id="erreur" class="text-danger"></div>
+
+
+                <div class="form-group">
+                    <a href="/rentrees" class="btn btn-default col-sm-offset-10">&lt; Retour</a>
+
+                    <button type="submit" class="btn btn-success">Valider</button>
+                </div>
+
+                </form>
+            </div>
+
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+
+
+    <div class="modal fade bs-example-modal-lg" id="ValidModal" tabindex="-1" role="dialog" data-target=".bs-example-modal-lg">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Modifier une nouvelle rentr&eacute;e</h4>
+          </div>
+          <div class="modal-body">
+            <p><% if(validForm == 1){ %>
+                <%- "Votre nouvelle rentr&eacute;e a &eacute;t&eacute; modifi&eacute;e." %>
+            <%  } else if(validForm == 2){ %>
+               <%- "La rentr&eacute;e a &eacute;t&eacute; supprim&eacute;e" %>
+            <% } %> 
+            </p>
+            <button type="button" class="btn btn-primary col-sm-offset-11" data-dismiss="modal">OK</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+    <script>
+      function trySub(){
+        var inpNom = document.getElementById("nom").value;
+        var inpPrenom = document.getElementById("prenom").value;
+        var inpPersonnes = document.getElementById("personnes").value;
+        var inpRaisons = document.getElementById("raisons").value;
+        var inpNewRaison = document.getElementById("newRaison").value;
+        var spanErr = document.getElementById("erreur");
+
+        if(inpNom == "" && inpPrenom == "" && inpPersonnes==0){
+            spanErr.innerHTML = "<span>Veuillez renseigner une personne</span>";
+            return false;
+        }
+        if(inpNewRaison == "" && inpRaisons == 0){
+            spanErr.innerHTML = "<span>Veuillez renseigner une raison</span>";
+            return false;
+        }
+        return true;
+      }
+
+
+      function updPage(){
+        var selPers = document.getElementById('selPers').value;
+        window.location.replace("/rentrees/"+selPers);
+      }
+
+      $( function() {
+        $( "#datepicker" ).datepicker({
+          dateFormat: "yy-mm-dd"
+        });
+      } );
+        <% if(validForm!=0){ %>
+                           <%- "$('#ValidModal').modal('show');" %>
+        <% } %>
+    </script>
+
+
+<%- include('foot', {}); %>
